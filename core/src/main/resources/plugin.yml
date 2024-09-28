@@ -1,0 +1,8 @@
+name: CoreBridge
+main: top.wcpe.corebridge.core.CoreBridge
+version: "${version}"
+author: "WCPE QQ1837019522"
+website: "https://github.com/wcpe"
+
+depend:
+  - 'WcpeLib'

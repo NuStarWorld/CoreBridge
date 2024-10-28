@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import top.wcpe.corebridge.api.packet.Argument
 import top.wcpe.corebridge.api.packet.Packet
 import top.wcpe.corebridge.api.packet.PacketExecutor
+import top.wcpe.corebridge.api.packet.annotation.SinglePacket
 import top.wcpe.corebridge.core.CoreBridge
 import top.wcpe.corebridge.core.packet.extend.parentPacket
 import top.wcpe.corebridge.core.packet.extend.singlePacket
@@ -65,14 +66,14 @@ object PacketManager {
         if (pluginInstance !is JavaPlugin) {
             return false
         }
-        val packetCommand = packetInstance.name
-        val packetPair = packetMap[packetCommand]
+        val packetName = packetInstance.name
+        val packetPair = packetMap[packetName]
 
         if (packetPair != null) {
             val packet = packetPair.first
             val instance = packetPair.second
             logger.info("检测到插件: [${instance.name}] 已注册包: ${packet.name}")
-            if (packetMap.remove(packetCommand) != null) {
+            if (packetMap.remove(packetName) != null) {
                 logger.info("注销包: ${packet.name} 成功!")
             } else {
                 logger.info("注销包: ${packet.name} 失败! 您的包可能并不会生效")
@@ -80,11 +81,12 @@ object PacketManager {
         }
         pluginPacketMap.computeIfAbsent(pluginInstance.name) {
             mutableMapOf()
-        }[packetCommand] = packetInstance to pluginInstance
+        }[packetName] = packetInstance to pluginInstance
 
-        packetMap[packetCommand] = packetInstance to pluginInstance
+        packetMap[packetName] = packetInstance to pluginInstance
 
-        CoreBridge.api.getPacketService().addWhitelistPacket(packetCommand)
+        CoreBridge.api.getPacketService().addWhitelistPacket(packetName)
+        logger.info("注册包: ${packetInstance.name} 成功!")
         return true
     }
 
@@ -150,7 +152,7 @@ object PacketManager {
     }
 
     private fun parseParentPacket(packetClass: Class<*>): AbstractPacket? {
-        val parentPacketAnnotation = findAnnotation<ParentPacket>(packetClass) ?: return null
+        val parentPacketAnnotation = findAnnotation<top.wcpe.corebridge.api.packet.annotation.ParentPacket>(packetClass) ?: return null
 
         val parentPacket = parentPacket(
             parentPacketAnnotation.name,
@@ -168,7 +170,7 @@ object PacketManager {
     private fun parseChildPacket(
         parentInstance: ParentPacket, packetClass: Class<*>,
     ): ChildPacket? {
-        val childPacketAnnotation = findAnnotation<ChildPacket>(packetClass) ?: return null
+        val childPacketAnnotation = findAnnotation<top.wcpe.corebridge.api.packet.annotation.ChildPacket>(packetClass) ?: return null
 
         val newInstance = newInstance(packetClass)
 
@@ -198,7 +200,8 @@ object PacketManager {
      */
     @JvmStatic
     fun registerPacket(packetClass: Class<*>, pluginInstance: Any): Boolean {
-        return registerPacket(packetClass.kotlin, pluginInstance)
+        val parseAnnotation = parseAnnotation(packetClass) ?: return false
+        return registerPacket(parseAnnotation, pluginInstance)
     }
 
     /**

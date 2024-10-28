@@ -3,6 +3,7 @@ package top.wcpe.corebridge.api
 import top.wcpe.corebridge.api.services.IGuiService
 import top.wcpe.corebridge.api.services.IPacketService
 import top.wcpe.corebridge.api.services.IPlaceholderService
+import top.wcpe.corebridge.api.services.IScriptService
 import top.wcpe.corebridge.api.services.ISlotService
 
 /**
@@ -42,4 +43,11 @@ interface CoreBridgeApi {
      * @return [IPacketService] 数据包服务
      */
     fun getPacketService(): IPacketService
+
+
+    /**
+     * 获取脚本服务
+     * @return [IScriptService] 脚本服务
+     */
+    fun getScriptService(): IScriptService
 }

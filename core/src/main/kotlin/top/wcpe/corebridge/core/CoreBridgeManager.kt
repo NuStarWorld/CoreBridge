@@ -6,6 +6,7 @@ import top.wcpe.corebridge.api.CoreBridgeApi
 import top.wcpe.corebridge.api.services.IGuiService
 import top.wcpe.corebridge.api.services.IPacketService
 import top.wcpe.corebridge.api.services.IPlaceholderService
+import top.wcpe.corebridge.api.services.IScriptService
 import top.wcpe.corebridge.api.services.ISlotService
 
 /**
@@ -20,13 +21,13 @@ import top.wcpe.corebridge.api.services.ISlotService
  * @author : WCPE
  */
 class CoreBridgeManager(private val apis: List<CoreBridgeApi>) : CoreBridgeApi, IPlaceholderService, IGuiService,
-    IPacketService, ISlotService {
+    IPacketService, ISlotService, IScriptService {
 
     override fun getPlaceholderService(): IPlaceholderService = this
     override fun getSlotService(): ISlotService = this
     override fun getGuiService(): IGuiService = this
     override fun getPacketService(): IPacketService = this
-
+    override fun getScriptService(): IScriptService = this
     override fun sendPlaceholder(player: Player, placeholder: String, value: String) {
         apis.forEach { coreBridgeApi ->
             coreBridgeApi.getPlaceholderService().sendPlaceholder(player, placeholder, value)
@@ -98,6 +99,22 @@ class CoreBridgeManager(private val apis: List<CoreBridgeApi>) : CoreBridgeApi, 
     ) {
         apis.forEach { coreBridgeApi ->
             coreBridgeApi.getSlotService().sendItemStackToClientSlot(player, slotIdentifier, itemStack)
+        }
+    }
+
+    override fun sendScriptToClientForExecution(targetPlayer: Player, guiIndex: String, scriptContent: String) {
+        apis.forEach { coreBridgeApi ->
+            coreBridgeApi.getScriptService().sendScriptToClientForExecution(targetPlayer, guiIndex, scriptContent)
+        }
+    }
+
+    override fun sendScriptsToClientForExecution(
+        targetPlayer: Player,
+        guiIndex: String,
+        vararg scriptContents: String,
+    ) {
+        apis.forEach { coreBridgeApi ->
+            coreBridgeApi.getScriptService().sendScriptsToClientForExecution(targetPlayer, guiIndex, *scriptContents)
         }
     }
 

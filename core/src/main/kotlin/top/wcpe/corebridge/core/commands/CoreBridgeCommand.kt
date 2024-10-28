@@ -4,11 +4,9 @@ import kotlinx.coroutines.launch
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import top.wcpe.corebridge.core.CoreBridge
-import top.wcpe.corebridge.core.packet.PacketManager
 import top.wcpe.wcpelib.common.command.v2.CommandExecutor
 import top.wcpe.wcpelib.common.command.v2.CommandSender
 import top.wcpe.wcpelib.common.command.v2.TabCompleter
-import top.wcpe.wcpelib.common.command.v2.annotation.Argument
 import top.wcpe.wcpelib.common.command.v2.annotation.ChildCommand
 import top.wcpe.wcpelib.common.command.v2.annotation.ParentCommand
 
@@ -57,55 +55,6 @@ abstract class CoreBridgeCommand : CommandExecutor, TabCompleter {
         }
     }
 
-    abstract class PacketCommand() : CoreBridgeCommand() {
-        open val packetTabCompleteIndex = 2
-        override fun tabComplete(commandSender: CommandSender<*>, args: Array<String>): List<String> {
-            return if (args.size == packetTabCompleteIndex) {
-                val keys = PacketManager.getPacketMap().keys
-                if (args.isNotEmpty()) {
-                    keys.filter {
-                        it.lowercase().startsWith(args[packetTabCompleteIndex - 1].lowercase())
-                    }
-                } else {
-                    keys
-                }.toList()
-            } else {
-                emptyList()
-            }
-        }
-    }
-
-    @ChildCommand(
-        name = "packet",
-        description = "发包测试",
-        aliases = ["p"],
-        arguments = [Argument("identifier", true, "包的唯一标识符")],
-        playerOnly = true
-    )
-    class PacketChildCommand : PacketCommand() {
-        override val packetTabCompleteIndex = 1
-        override fun execute(commandSender: CommandSender<*>, args: Array<String?>) {
-            val player = commandSender.getCommandSender() as? Player ?: return
-            val identifier = args[0] ?: return
-
-            CoreBridge.instance.handlePacket(player, identifier, args.filterNotNull().slice(1..args.lastIndex))
-        }
-    }
-
-    @ChildCommand(
-        name = "packetToPlayer",
-        description = "发包测试",
-        aliases = ["ptp"],
-        arguments = [Argument("playerName", true, "玩家名称"), Argument("identifier", true, "包的唯一标识符")]
-    )
-    class PacketToPlayerChildCommand : PacketCommand() {
-        override fun execute(commandSender: CommandSender<*>, args: Array<String?>) {
-            val player = getPlayer(commandSender, args[0]) ?: return
-            val identifier = args[1] ?: return
-
-            CoreBridge.instance.handlePacket(player, identifier, args.filterNotNull().slice(2..args.lastIndex))
-        }
-    }
 
     @ChildCommand("reload", "重载插件", ["r"])
     class ReloadChildCommand : CommandExecutor {

@@ -20,7 +20,7 @@ import top.wcpe.wcpelib.common.command.v2.annotation.ParentCommand
 @ParentCommand(
     name = "CoreBridgePlaceholder",
     description = "CoreBridge 占位符服务相关命令",
-    aliases = ["cbp", "cbPlaceholder"]
+    aliases = ["cbp", "cbplaceholder","coreplaceholder"]
 )
 class CoreBridgePlaceholderCommand {
 

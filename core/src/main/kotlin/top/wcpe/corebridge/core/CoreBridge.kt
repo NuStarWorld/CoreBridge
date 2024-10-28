@@ -14,6 +14,7 @@ import top.wcpe.corebridge.api.CoreBridgeInstance
 import top.wcpe.corebridge.api.event.CustomPacketEvent
 import top.wcpe.corebridge.core.commands.CoreBridgeCommand
 import top.wcpe.corebridge.core.commands.CoreBridgeGuiCommand
+import top.wcpe.corebridge.core.commands.CoreBridgePacketCommand
 import top.wcpe.corebridge.core.commands.CoreBridgePlaceholderCommand
 import top.wcpe.corebridge.core.packet.PacketManager
 import top.wcpe.wcpelib.common.command.v2.CommandManager
@@ -80,6 +81,7 @@ class CoreBridge : JavaPlugin(), CoreBridgeInstance {
         CommandManager.registerCommand(CoreBridgeCommand::class.java, this)
         CommandManager.registerCommand(CoreBridgeGuiCommand::class.java, this)
         CommandManager.registerCommand(CoreBridgePlaceholderCommand::class.java, this)
+        CommandManager.registerCommand(CoreBridgePacketCommand::class.java, this)
     }
 
     override fun onDisable() {

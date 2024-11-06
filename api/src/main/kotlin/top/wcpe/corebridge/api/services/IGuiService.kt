@@ -33,4 +33,18 @@ interface IGuiService {
      * @param player 玩家
      */
     fun requestCloseGui(player: Player)
+
+
+    /**
+     * 获取所有 GUI 索引列表
+     * @return 所有 GUI 索引列表
+     */
+    fun getGuiIndexList(): List<String>
+
+    /**
+     * 重载指定 GUI 界面
+     * @param player 玩家
+     * @param index GUI 索引
+     */
+    fun reloadGui(player: Player, index: String)
 }

@@ -86,6 +86,16 @@ class CoreBridgeManager(private val apis: List<CoreBridgeApi>) : CoreBridgeApi, 
         }
     }
 
+    override fun getGuiIndexList(): List<String> {
+        return apis.first().getGuiService().getGuiIndexList()
+    }
+
+    override fun reloadGui(player: Player, index: String) {
+        apis.forEach { coreBridgeApi ->
+            coreBridgeApi.getGuiService().reloadGui(player, index)
+        }
+    }
+
     override fun addWhitelistPacket(identifier: String) {
         apis.forEach { coreBridgeApi ->
             coreBridgeApi.getPacketService().addWhitelistPacket(identifier)

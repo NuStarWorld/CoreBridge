@@ -30,13 +30,13 @@ object CoreBridgeFactory {
         val germPlugin = server.pluginManager.getPlugin("GermPlugin")
 
         if (dragonCorePlugin != null) {
-            apis.add(DragonCoreCoreBridgeApiImpl.init(CoreBridge.instance))
+            apis.add(DragonCoreCoreBridgeApiImpl.init(CoreBridge.instance, dragonCorePlugin))
         }
         if (easyCorePlugin != null) {
             apis.add(EasyCoreCoreBridgeApiImpl.init(CoreBridge.instance))
         }
         if (germPlugin != null) {
-            apis.add(GermPluginCoreBridgeApiImpl.init(CoreBridge.instance))
+            apis.add(GermPluginCoreBridgeApiImpl.init(CoreBridge.instance, germPlugin))
         }
         if (apis.isEmpty()) {
             throw RuntimeException("未找到任何核心插件, 请至少安装 DragonCore | EasyCore | GermPlugin 中的一个!")

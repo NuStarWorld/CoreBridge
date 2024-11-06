@@ -27,4 +27,12 @@ object GuiService : IGuiService {
     override fun requestCloseGui(player: Player) {
         EasyCoreAPI.closeGui(player)
     }
+
+    override fun getGuiIndexList(): List<String> {
+        TODO("Not yet implemented")
+    }
+
+    override fun reloadGui(player: Player, index: String) {
+        TODO("Not yet implemented")
+    }
 }

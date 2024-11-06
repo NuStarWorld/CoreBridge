@@ -14,6 +14,7 @@ import top.wcpe.corebridge.impl.germplugin.services.PacketService
 import top.wcpe.corebridge.impl.germplugin.services.PlaceholderService
 import top.wcpe.corebridge.impl.germplugin.services.ScriptService
 import top.wcpe.corebridge.impl.germplugin.services.SlotService
+import java.io.File
 
 /**
  * 由 WCPE 在 2024/9/26 12:26 创建
@@ -28,13 +29,26 @@ import top.wcpe.corebridge.impl.germplugin.services.SlotService
  */
 object GermPluginCoreBridgeApiImpl : CoreBridgeApi {
     @JvmStatic
-    lateinit var plugin: Plugin
+    lateinit var coreBridge: Plugin
         private set
 
     @JvmStatic
-    fun init(plugin: Plugin): CoreBridgeApi {
-        this.plugin = plugin
-        Bukkit.getPluginManager().registerEvents(PacketListener, plugin)
+    lateinit var germPlugin: Plugin
+        private set
+
+    @JvmStatic
+    lateinit var guiDirFile: File
+        private set
+
+    @JvmStatic
+    fun init(coreBridge: Plugin, germPlugin: Plugin): CoreBridgeApi {
+        this.coreBridge = coreBridge
+        this.germPlugin = germPlugin
+        guiDirFile = File(germPlugin.dataFolder, "gui")
+        if (!guiDirFile.exists()) {
+            guiDirFile.mkdirs()
+        }
+        Bukkit.getPluginManager().registerEvents(PacketListener, coreBridge)
         return this
     }
 

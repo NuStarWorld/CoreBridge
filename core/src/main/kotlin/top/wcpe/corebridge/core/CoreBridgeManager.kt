@@ -29,6 +29,9 @@ class CoreBridgeManager(private val apis: List<CoreBridgeApi>) : CoreBridgeApi, 
     override fun getPacketService(): IPacketService = this
     override fun getScriptService(): IScriptService = this
     override fun sendPlaceholder(player: Player, placeholder: String, value: String) {
+        CoreBridge.instance.debug { logger ->
+            logger.info("[${player.name}] 发送变量占位符 [$placeholder] -> [$value]")
+        }
         apis.forEach { coreBridgeApi ->
             coreBridgeApi.getPlaceholderService().sendPlaceholder(player, placeholder, value)
         }
@@ -38,6 +41,9 @@ class CoreBridgeManager(private val apis: List<CoreBridgeApi>) : CoreBridgeApi, 
         player: Player,
         placeholderMap: Map<String, String>,
     ) {
+        CoreBridge.instance.debug { logger ->
+            logger.info("[${player.name}] 发送变量占位符集合 $placeholderMap")
+        }
         apis.forEach { coreBridgeApi ->
             coreBridgeApi.getPlaceholderService().sendPlaceholderMap(player, placeholderMap)
         }
@@ -47,6 +53,9 @@ class CoreBridgeManager(private val apis: List<CoreBridgeApi>) : CoreBridgeApi, 
         player: Player,
         vararg placeholders: Pair<String, String>,
     ) {
+        CoreBridge.instance.debug { logger ->
+            logger.info("[${player.name}] 发送变量占位符集合 ${placeholders.toMap()}")
+        }
         apis.forEach { coreBridgeApi ->
             coreBridgeApi.getPlaceholderService().sendPlaceholders(player, *placeholders)
         }
@@ -107,6 +116,9 @@ class CoreBridgeManager(private val apis: List<CoreBridgeApi>) : CoreBridgeApi, 
         slotIdentifier: String,
         itemStack: ItemStack?,
     ) {
+        CoreBridge.instance.debug { logger ->
+            logger.info("[${player.name}] 发送物品 [$slotIdentifier] -> [$itemStack]")
+        }
         apis.forEach { coreBridgeApi ->
             coreBridgeApi.getSlotService().sendItemStackToClientSlot(player, slotIdentifier, itemStack)
         }

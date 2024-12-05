@@ -1,11 +1,14 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
-    `maven-publish`
     java
-    id("org.jetbrains.kotlin.jvm") version "1.7.10" apply false
+    idea
+    `java-library`
+    `maven-publish`
+    id("org.jetbrains.kotlin.jvm") version "2.1.0"
+    id("org.jetbrains.dokka") version "1.9.20"
 }
-
 
 tasks {
     jar {
@@ -15,20 +18,24 @@ tasks {
         rootProject.subprojects.forEach { from(it.sourceSets["main"].output) }
     }
 }
-subprojects {
-    apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(plugin = "maven-publish")
-    apply(plugin = "java")
 
+allprojects {
     repositories {
         mavenLocal()
-        maven("https://maven.wcpe.top/repository/maven-public/")
-        maven("https://libraries.minecraft.net")
         maven("https://maven.aliyun.com/repository/central")
+        maven("https://maven.wcpe.top/repository/maven-public/")
+        maven("https://jitpack.io")
+        maven("https://libraries.minecraft.net")
         maven("https://repo1.maven.org/maven2")
         maven("https://repo.codemc.io/repository/nms/")
         mavenCentral()
     }
+}
+
+subprojects {
+    apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "maven-publish")
+    apply(plugin = "java")
 
     val wcpelibVersion = "1.8.1"
     dependencies {
@@ -45,10 +52,17 @@ subprojects {
     }
 
     java {
-        withJavadocJar()
         withSourcesJar()
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
-
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_1_8
+            apiVersion = KotlinVersion.KOTLIN_2_1
+            languageVersion = KotlinVersion.KOTLIN_2_1
+        }
+    }
     tasks.test {
         useJUnitPlatform()
     }
@@ -56,16 +70,6 @@ subprojects {
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
         options.compilerArgs.addAll(listOf("-XDenableSunApiLintControl"))
-    }
-    java {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = "1.8"
-            freeCompilerArgs = listOf("-Xjvm-default=all", "-Xskip-metadata-version-check")
-        }
     }
 
     publishing {
@@ -87,7 +91,7 @@ subprojects {
         publications {
 
             create<MavenPublication>("maven") {
-                artifactId = project.name.toLowerCase()
+                artifactId = "${rootProject.name}-${project.name}".lowercase()
                 groupId = project.group.toString()
                 version = "${project.version}"
                 from(components["java"])

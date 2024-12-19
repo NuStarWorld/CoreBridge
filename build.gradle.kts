@@ -61,6 +61,7 @@ subprojects {
             jvmTarget = JvmTarget.JVM_1_8
             apiVersion = KotlinVersion.KOTLIN_2_1
             languageVersion = KotlinVersion.KOTLIN_2_1
+            freeCompilerArgs = listOf("-Xjvm-default=all", "-Xskip-metadata-version-check")
         }
     }
     tasks.test {

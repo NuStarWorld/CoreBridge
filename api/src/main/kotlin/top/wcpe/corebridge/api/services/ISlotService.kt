@@ -22,4 +22,6 @@ interface ISlotService {
      * @param itemStack 物品对象
      */
     fun sendItemStackToClientSlot(player: Player, slotIdentifier: String, itemStack: ItemStack?)
+
+    fun getItemStackFromIdentifier(player: Player, slotIdentifier: String) : ItemStack?
 }

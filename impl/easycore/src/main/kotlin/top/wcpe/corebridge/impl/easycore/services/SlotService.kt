@@ -1,6 +1,7 @@
 package top.wcpe.corebridge.impl.easycore.services
 
 import com.yuankong.easycore.api.ui.SlotAPI
+import com.yuankong.easycore.core.data.EasyPlayerData
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import top.wcpe.corebridge.api.services.ISlotService
@@ -19,5 +20,8 @@ import top.wcpe.corebridge.api.services.ISlotService
 object SlotService : ISlotService {
     override fun sendItemStackToClientSlot(player: Player, slotIdentifier: String, itemStack: ItemStack?) {
         SlotAPI.sendCacheItemStack(player, slotIdentifier, itemStack)
+    }
+    override fun getItemStackFromIdentifier(player: Player, slotIdentifier: String) : ItemStack? {
+        return EasyPlayerData.getPlayerData(player).cacheItems[slotIdentifier]?.itemStack
     }
 }

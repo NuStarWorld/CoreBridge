@@ -124,6 +124,15 @@ class CoreBridgeManager(private val apis: List<CoreBridgeApi>) : CoreBridgeApi, 
         }
     }
 
+    override fun getItemStackFromIdentifier(player: Player, slotIdentifier: String): ItemStack? {
+        CoreBridge.instance.debug { logger ->
+            logger.info("[${player.name}] 获取物品 [$slotIdentifier]")
+        }
+        apis.forEach { coreBridgeApi ->
+            return coreBridgeApi.getSlotService().getItemStackFromIdentifier(player, slotIdentifier)
+        }
+        return null
+    }
     override fun sendScriptToClientForExecution(targetPlayer: Player, guiIndex: String, scriptContent: String) {
         apis.forEach { coreBridgeApi ->
             coreBridgeApi.getScriptService().sendScriptToClientForExecution(targetPlayer, guiIndex, scriptContent)

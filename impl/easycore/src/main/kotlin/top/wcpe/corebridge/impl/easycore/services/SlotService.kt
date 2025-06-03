@@ -20,4 +20,29 @@ object SlotService : ISlotService {
     override fun sendItemStackToClientSlot(player: Player, slotIdentifier: String, itemStack: ItemStack?) {
         SlotAPI.sendCacheItemStack(player, slotIdentifier, itemStack)
     }
+
+    override fun getSlotItem(
+        player: Player,
+        slotIdentifier: String,
+    ): ItemStack? {
+        return SlotAPI.getExtraSlotItem(player, slotIdentifier)
+    }
+
+    override fun setSlotItem(
+        player: Player,
+        slotIdentifier: String,
+        itemStack: ItemStack?,
+    ) {
+        SlotAPI.setExtraSlotItem(player, slotIdentifier, itemStack)
+    }
+
+    override fun setSlotItem(
+        player: Player,
+        slotIdentifier: String,
+        itemStack: ItemStack?,
+        syncToClient: Boolean,
+    ) {
+        SlotAPI.setExtraSlotItem(player, slotIdentifier, itemStack)
+        SlotAPI.sendCacheItemStack(player, slotIdentifier, itemStack)
+    }
 }

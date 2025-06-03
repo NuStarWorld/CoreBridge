@@ -3,11 +3,7 @@ package top.wcpe.corebridge.core
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import top.wcpe.corebridge.api.CoreBridgeApi
-import top.wcpe.corebridge.api.services.IGuiService
-import top.wcpe.corebridge.api.services.IPacketService
-import top.wcpe.corebridge.api.services.IPlaceholderService
-import top.wcpe.corebridge.api.services.IScriptService
-import top.wcpe.corebridge.api.services.ISlotService
+import top.wcpe.corebridge.api.services.*
 
 /**
  * 由 WCPE 在 2024/9/26 12:09 创建
@@ -122,6 +118,30 @@ class CoreBridgeManager(private val apis: List<CoreBridgeApi>) : CoreBridgeApi, 
         apis.forEach { coreBridgeApi ->
             coreBridgeApi.getSlotService().sendItemStackToClientSlot(player, slotIdentifier, itemStack)
         }
+    }
+
+    override fun getSlotItem(
+        player: Player,
+        slotIdentifier: String,
+    ): ItemStack? {
+        return apis.firstOrNull()?.getSlotService()?.getSlotItem(player, slotIdentifier)
+    }
+
+    override fun setSlotItem(
+        player: Player,
+        slotIdentifier: String,
+        itemStack: ItemStack?,
+    ) {
+        apis.firstOrNull()?.getSlotService()?.setSlotItem(player, slotIdentifier, itemStack)
+    }
+
+    override fun setSlotItem(
+        player: Player,
+        slotIdentifier: String,
+        itemStack: ItemStack?,
+        syncToClient: Boolean,
+    ) {
+        apis.firstOrNull()?.getSlotService()?.setSlotItem(player, slotIdentifier, itemStack, syncToClient)
     }
 
     override fun sendScriptToClientForExecution(targetPlayer: Player, guiIndex: String, scriptContent: String) {

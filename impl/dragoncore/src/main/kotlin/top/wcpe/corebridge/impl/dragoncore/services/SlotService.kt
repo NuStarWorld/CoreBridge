@@ -1,5 +1,6 @@
 package top.wcpe.corebridge.impl.dragoncore.services
 
+import eos.moe.dragoncore.api.SlotAPI
 import eos.moe.dragoncore.network.PacketSender
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -20,6 +21,30 @@ object SlotService : ISlotService {
 
     override fun sendItemStackToClientSlot(player: Player, slotIdentifier: String, itemStack: ItemStack?) {
         PacketSender.putClientSlotItem(player, slotIdentifier, itemStack)
+    }
+
+    override fun getSlotItem(
+        player: Player,
+        slotIdentifier: String,
+    ): ItemStack? {
+        return SlotAPI.getCacheSlotItem(player, slotIdentifier)
+    }
+
+    override fun setSlotItem(
+        player: Player,
+        slotIdentifier: String,
+        itemStack: ItemStack?,
+    ) {
+        SlotAPI.setSlotItem(player, slotIdentifier, itemStack, false)
+    }
+
+    override fun setSlotItem(
+        player: Player,
+        slotIdentifier: String,
+        itemStack: ItemStack?,
+        syncToClient: Boolean,
+    ) {
+        SlotAPI.setSlotItem(player, slotIdentifier, itemStack, syncToClient)
     }
 
 

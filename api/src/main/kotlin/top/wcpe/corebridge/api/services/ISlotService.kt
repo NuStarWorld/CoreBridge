@@ -22,4 +22,34 @@ interface ISlotService {
      * @param itemStack 物品对象
      */
     fun sendItemStackToClientSlot(player: Player, slotIdentifier: String, itemStack: ItemStack?)
+
+    /**
+     * 获取客户端的某个槽位的物品
+     * @param player 玩家对象
+     * @param slotIdentifier 槽位标识符
+     * @return 物品对象
+     */
+    fun getSlotItem(player: Player, slotIdentifier: String): ItemStack?
+
+    /**
+     * 设置客户端的某个槽位的物品
+     * @param player 玩家对象
+     * @param slotIdentifier 槽位标识符
+     * @param itemStack 物品对象
+     */
+    fun setSlotItem(player: Player, slotIdentifier: String, itemStack: ItemStack?)
+
+    /**
+     * 设置客户端的某个槽位的物品
+     * @param player 玩家对象
+     * @param slotIdentifier 槽位标识符
+     * @param itemStack 物品对象
+     * @param syncToClient 是否同步到客户端
+     */
+    fun setSlotItem(
+        player: Player,
+        slotIdentifier: String,
+        itemStack: ItemStack?,
+        syncToClient: Boolean,
+    )
 }

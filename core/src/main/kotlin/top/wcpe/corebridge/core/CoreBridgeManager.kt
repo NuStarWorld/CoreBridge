@@ -144,6 +144,10 @@ class CoreBridgeManager(private val apis: List<CoreBridgeApi>) : CoreBridgeApi, 
         apis.firstOrNull()?.getSlotService()?.setSlotItem(player, slotIdentifier, itemStack, syncToClient)
     }
 
+    override fun removeCacheItemStack(player: Player, slotIdentifier: String, isStartWith: Boolean) {
+        apis.firstOrNull()?.getSlotService()?.removeCacheItemStack(player, slotIdentifier, isStartWith)
+    }
+
     override fun sendScriptToClientForExecution(targetPlayer: Player, guiIndex: String, scriptContent: String) {
         apis.forEach { coreBridgeApi ->
             coreBridgeApi.getScriptService().sendScriptToClientForExecution(targetPlayer, guiIndex, scriptContent)

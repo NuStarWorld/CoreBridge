@@ -52,4 +52,10 @@ interface ISlotService {
         itemStack: ItemStack?,
         syncToClient: Boolean,
     )
+
+    fun removeCacheItemStack(
+        player: Player,
+        slotIdentifier: String,
+        isStartWith: Boolean
+    )
 }

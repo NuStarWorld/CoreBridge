@@ -45,4 +45,8 @@ object SlotService : ISlotService {
         SlotAPI.setExtraSlotItem(player, slotIdentifier, itemStack)
         SlotAPI.sendCacheItemStack(player, slotIdentifier, itemStack)
     }
+
+    override fun removeCacheItemStack(player: Player, slotIdentifier: String, isStartWith: Boolean) {
+        SlotAPI.removeCacheItemStack(player, slotIdentifier, isStartWith)
+    }
 }

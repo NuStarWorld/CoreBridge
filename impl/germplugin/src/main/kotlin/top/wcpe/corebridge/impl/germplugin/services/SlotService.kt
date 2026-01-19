@@ -61,4 +61,7 @@ object SlotService : ISlotService {
         GermPacketAPI.sendSlotItemStack(player, slotIdentifier, itemStack)
     }
 
+    override fun removeCacheItemStack(player: Player, slotIdentifier: String, isStartWith: Boolean) {
+        // TODO 萌芽未实现该 API
+    }
 }

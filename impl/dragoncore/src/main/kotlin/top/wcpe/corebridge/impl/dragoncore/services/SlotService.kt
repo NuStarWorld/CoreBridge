@@ -47,5 +47,7 @@ object SlotService : ISlotService {
         SlotAPI.setSlotItem(player, slotIdentifier, itemStack, syncToClient)
     }
 
-
+    override fun removeCacheItemStack(player: Player, slotIdentifier: String, isStartWith: Boolean) {
+        PacketSender.sendDeleteItemStackCache(player, slotIdentifier, isStartWith)
+    }
 }
